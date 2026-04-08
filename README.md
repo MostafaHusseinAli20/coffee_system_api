@@ -1,43 +1,130 @@
 # ☕ Coffee System API
-## 📌 Project Description
-Coffee System API is a SaaS-based backend system designed for coffee shops, restaurants, and small food businesses to manage their daily operations efficiently.
 
-The system allows each coffee shop or restaurant to create its own account and manage its internal operations such as:
+A **SaaS-based Coffee & Restaurant Management System API** built with Laravel that allows coffee shops and restaurants to manage their operations through a secure and scalable RESTful API.
 
-• Products
-• Categories
-• Orders
-• Users (Admins, Workers, etc.)
-• Permissions
-• Settings
-• Authentication
-• API-based operations
+---
 
-The platform is built to support multi-tenant SaaS architecture, where each coffee shop operates independently within the same system while maintaining secure and isolated data.
+## 📖 Overview
 
-This project focuses on building a scalable, secure, and clean-architecture RESTful API using Laravel best practices.
+**Coffee System API** is a backend system designed to help coffee shops and restaurants manage their business operations in a centralized SaaS platform.
 
-## 🎯 Project Goals
-• Build a SaaS system for coffee shops and restaurants
-• Provide a clean RESTful API
-• Support multi-authentication (Admin, Developer, Worker, etc.)
-• Implement permission-based access control
-• Secure authentication using JWT
-• Scalable architecture for future web/mobile apps
-• Easy integration with POS systems and dashboards
+Each coffee shop can create its own account and manage:
 
-## 🏗️ System Features
+- Products
+- Categories
+- Orders
+- Users (Admins & Workers)
+- Permissions
+- Settings
+- Authentication
+- API operations
 
-• 🔐 Authentication & Authorization
-• JWT Authentication
-• Multi Guards
-• Role & Permission System
-• Developer access
-• Admin access
-• Worker access
+The system follows **clean architecture principles** and is built to be scalable for **web and mobile applications**.
 
-## Coffee Management
-• Coffee shop registration
-• Coffee settings
-• Coffee profile management
+---
 
+## 🎯 Goals
+
+- Build a scalable SaaS backend system
+- Provide clean RESTful API
+- Support multi-auth system
+- Implement permission-based access control
+- Secure authentication using JWT
+- Ready for POS and Dashboard integration
+- Maintain clean and maintainable architecture
+
+---
+
+## ⚙️ Core Features
+
+### 🔐 Authentication & Authorization
+
+- JWT Authentication
+- Multi Guards
+- Role & Permission System
+- Admin access
+- Developer access
+- Worker access
+- Middleware protection
+
+### ☕ Coffee Management
+
+- Coffee shop registration
+- Coffee profile
+- Coffee settings
+- Coffee system configuration
+
+### 📦 Product Management
+
+- Create product
+- Update product
+- Delete product
+- Product pricing
+- Assign category to product
+
+### 📂 Category Management
+
+- Create category
+- Update category
+- Delete category
+- Manage product categories
+
+---
+
+## 🧰 Tech Stack
+
+| Technology | Usage |
+|-----------|------|
+| PHP 8+ | Core language |
+| Laravel 11 | Backend Framework |
+| MySQL | Database |
+| JWT | Authentication |
+| Laravel Breeze | Auth Structure |
+| REST API | API Architecture |
+| Middleware | Security |
+| Service Pattern | Business Logic |
+| Repository Pattern | Data Layer |
+| API Resource | Response Formatting |
+| Form Request | Validation |
+
+---
+
+## 🏛️ Architecture
+Controllers
+Services
+Repositories
+Middleware
+Traits
+Requests
+Resources
+Models
+Routes
+
+### Benefits
+
+- Scalable
+- Clean code
+- Separation of concerns
+- Easy to maintain
+- Easy to expand
+
+---
+
+## 🔑 Authentication
+
+The system uses **JWT Token Authentication**.
+
+### Login
+
+POST /api/login
+
+### Response
+
+```json
+{
+    "token": "jwt_token",
+  "user": {
+      "id": 1,
+    "name": "Admin"
+  }
+}
