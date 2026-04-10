@@ -20,22 +20,25 @@ class CoffeeController extends Controller
 
     /**
      * Display a listing of the resource.
-     */
+    */
     public function index()
     {
 
-        $coffees = Coffee::get();
+        $coffees = Coffee::latest()->paginate(PAGINATION_COUNT);
 
         if ($coffees->isEmpty()) {
             return $this->errorResponse('No coffees found', 404);
         }
 
+        $response = CoffeeResource::collection($coffees);
+        // Transform the collection of Coffee models into a collection of CoffeeResource
+        // CoffeeResource::collection($coffees)->response()->getData(true); => ['data' => $response['data], ]
+        // Set the HTTP status code to 200 (OK)
         return $this->successResponse(
-            CoffeeResource::collection($coffees)->paginate(PAGINATION_COUNT),
+            $response,
             'Coffees retrieved successfully',
             200
         );
-
     }
 
     /**

@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('coffee_id', auth()->user()->coffee_id)->paginate(PAGINATION_COUNT);
+        $users = User::where('coffee_id', auth()->user()->coffee_id)->latest()->paginate(PAGINATION_COUNT);
 
         return $this->successResponse(
             UserResource::collection($users),
