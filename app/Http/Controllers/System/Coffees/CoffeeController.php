@@ -31,7 +31,7 @@ class CoffeeController extends Controller
         }
 
         return $this->successResponse(
-            CoffeeResource::collection($coffees),
+            CoffeeResource::collection($coffees)->paginate(PAGINATION_COUNT),
             'Coffees retrieved successfully',
             200
         );
