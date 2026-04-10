@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\System\Coffees;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\System\Coffees\CoffeeResource;
 use App\Models\Coffee;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class CoffeeController extends Controller
         }
 
         return $this->successResponse(
-            $coffees,
+            CoffeeResource::collection($coffees),
             'Coffees retrieved successfully',
             200
         );
@@ -46,7 +47,7 @@ class CoffeeController extends Controller
             'name' => 'required|string|max:255',
             'join_date' => 'required|date',
             'address' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'type' => 'required|in:coffee,resturant',
             'website' => 'nullable|url|max:255',
             'phone' => 'nullable|string|max:20',
             'logo' => 'nullable|image|max:2048',
@@ -61,11 +62,11 @@ class CoffeeController extends Controller
                 'website' => $request->website,
                 'phone' => $request->phone,
                 'logo' => $request->logo,
+                'created_by' => auth()->id(),
             ]);
             
             DB::commit();
             return $this->successResponse(
-                $coffee,
                 'Coffee created successfully',
                 201
             );
@@ -80,8 +81,9 @@ class CoffeeController extends Controller
      */
     public function show(string $id)
     {
+        $coffee = Coffee::find($id);
         return $this->successResponse(
-            Coffee::where('id', $id)->firstOrFail($id),
+            new CoffeeResource($coffee),
             'Coffee retrieved successfully',
             200
         );
@@ -92,7 +94,37 @@ class CoffeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'join_date' => 'sometimes|required|date',
+            'address' => 'sometimes|required|string|max:255',
+            'type' => 'sometimes|required|in:coffee,resturant',
+            'website' => 'nullable|url|max:255',
+            'phone' => 'nullable|string|max:20',
+            'logo' => 'nullable|image|max:2048',
+        ]);
+        DB::beginTransaction();
+        try {
+            $coffee = Coffee::find($id);
+            $coffee->update([
+                'name' => $request->name ?? $coffee->name,
+                'join_date' => $request->join_date ?? $coffee->join_date,
+                'address' => $request->address ?? $coffee->address,
+                'type' => $request->type ?? $coffee->type,
+                'website' => $request->website ?? $coffee->website,
+                'phone' => $request->phone ?? $coffee->phone,
+                'logo' => $request->logo ?? $coffee->logo,
+                'updated_by' => auth()->id(),
+            ]);
+            DB::commit();
+            return $this->successResponse(
+                'Coffee updated successfully',
+                200
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -100,6 +132,18 @@ class CoffeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $coffee = Coffee::find($id);
+            $coffee->delete();
+            DB::commit();
+            return $this->successResponse(
+                'Coffee deleted successfully',
+                200
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage(), 500);
+        }
     }
 }
