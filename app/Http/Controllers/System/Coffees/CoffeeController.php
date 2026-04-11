@@ -85,6 +85,9 @@ class CoffeeController extends Controller
     public function show(string $id)
     {
         $coffee = Coffee::find($id);
+        if(!$coffee) {
+            return $this->errorResponse('Coffee not found', 404);
+        }
         return $this->successResponse(
             new CoffeeResource($coffee),
             'Coffee retrieved successfully',

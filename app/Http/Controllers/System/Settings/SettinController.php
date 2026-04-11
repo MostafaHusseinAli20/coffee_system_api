@@ -22,7 +22,12 @@ class SettinController extends Controller
      */
     public function index()
     {
-        $settings = Setting::where('coffee_id', auth()->user()->coffee_id)->paginate(PAGINATION_COUNT);
+        $settings = Setting::where('coffee_id', auth()->user()->coffee_id)
+            ->latest()->paginate(PAGINATION_COUNT);
+
+        if($settings->isEmpty()) {
+            return $this->errorResponse('No settings found', 404);
+        }
 
         return $this->successResponse(
             $settings,
@@ -71,7 +76,15 @@ class SettinController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $setting = Setting::where('coffee_id', auth()->user()->coffee_id)->find($id);
+        if (!$setting) {
+            return $this->errorResponse('Setting not found', 404);
+        }
+        return $this->successResponse(
+            $setting,
+            'Setting retrieved successfully',
+            200
+        );
     }
 
     /**
