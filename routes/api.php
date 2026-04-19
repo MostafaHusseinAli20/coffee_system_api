@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\JWTAuthController;
 use App\Http\Controllers\System\Coffees\CoffeeController;
 use App\Http\Controllers\System\Coffees\CoffeeSettinController;
 use App\Http\Controllers\System\Settings\SettinController;
+use App\Http\Controllers\System\Subscriptions\SubscriptionController;
 use App\Http\Controllers\System\Users\UserController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
@@ -28,5 +29,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Coffees
         Route::apiResource('coffees', CoffeeController::class);
+
+        // Subscriptions
+        Route::apiResource('subscriptions', SubscriptionController::class);
+
     });
 });

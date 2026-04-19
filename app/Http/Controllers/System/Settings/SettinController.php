@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\System\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\System\Settings\SettingResource;
 use App\Models\Setting;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -22,15 +23,24 @@ class SettinController extends Controller
      */
     public function index()
     {
-        $settings = Setting::where('coffee_id', auth()->user()->coffee_id)
-            ->latest()->paginate(PAGINATION_COUNT);
+        $user = auth()->user();
 
-        if($settings->isEmpty()) {
+        if ($user->role == 'developer') {
+            $settings = Setting::latest()->paginate(PAGINATION_COUNT);
+        } else {
+            $settings = Setting::where('coffee_id', $user->coffee_id)
+                ->latest()
+                ->paginate(PAGINATION_COUNT);
+        }
+
+        if ($settings->isEmpty()) {
             return $this->errorResponse('No settings found', 404);
         }
 
+        $response = SettingResource::collection($settings);
+
         return $this->successResponse(
-            $settings,
+            $response,
             'Settings retrieved successfully',
             200
         );
