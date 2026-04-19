@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\JWTAuthController;
+use App\Http\Controllers\Main\Shifts\CoffeeShiftsController;
 use App\Http\Controllers\System\Coffees\CoffeeController;
 use App\Http\Controllers\System\Coffees\CoffeeSettinController;
 use App\Http\Controllers\System\Settings\SettinController;
@@ -32,6 +33,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Subscriptions
         Route::apiResource('subscriptions', SubscriptionController::class);
+
+        // Shifts
+        Route::apiResource('coffee-shifts', CoffeeShiftsController::class);
 
     });
 });
