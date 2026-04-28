@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\JWTAuthController;
+use App\Http\Controllers\Main\Categories\CategoryController;
+use App\Http\Controllers\Main\Products\ProductController;
 use App\Http\Controllers\Main\Shifts\CoffeeShiftsController;
 use App\Http\Controllers\System\Coffees\CoffeeController;
 use App\Http\Controllers\System\Coffees\CoffeeSettinController;
@@ -37,5 +39,10 @@ Route::group(['prefix' => 'v1'], function () {
         // Shifts
         Route::apiResource('coffee-shifts', CoffeeShiftsController::class);
 
+        // Coffee Categories
+        Route::apiResource('coffee-categories', CategoryController::class);
+
+        // Coffee Products
+        Route::apiResource('coffee-products', ProductController::class);
     });
 });
